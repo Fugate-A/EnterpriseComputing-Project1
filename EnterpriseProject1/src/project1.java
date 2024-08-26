@@ -1,35 +1,44 @@
-
+//----------------------------------------------------------------------------------------
 /* Name: Andrew Fugate
  Course: CNT 4714 – Fall 2024
  Assignment title: Project 1 – An Event-driven Enterprise Simulation
  Date: Sunday September 8, 2024
 */
-//--------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.*;
 //----------------------------------------------------------------------------------------
-public class project1 {
+public class project1{
 
     static ArrayList < ArrayList < String > > CSVarray = new ArrayList<>();
-	
+//----------------------------------------------------------------------------------------
 	public static void main(String[] args)
 	{
 		openAndReadFile();
 		
-		for (int i = 0; i < CSVarray.size(); i++) {
+		arrayView();
+
+		startGUI();
+	}
+//----------------------------------------------------------------------------------------
+	private static void arrayView()
+	{
+		for( int i = 0; i < CSVarray.size(); i++ )
+		{
 		    ArrayList<String> row = CSVarray.get(i);
-		    System.out.println("This is row " + i + " of the ArrayList and it contains:");
-		    for (int j = 0; j < row.size(); j++) {
-		        System.out.println("Column " + (j + 1) + ": " + row.get(j));
+		    
+		    System.out.println( "This is row " + i + " of the ArrayList and it contains:" );
+		    
+		    for( int j = 0; j < row.size(); j++ )
+		    {
+		        System.out.println( "Column " + (j + 1) + ": " + row.get(j) );
 		    }
+		    
 		    System.out.println(); // Print a blank line for better readability between rows
 		}
-
-		
-		startGUI();
 	}
 //----------------------------------------------------------------------------------------
 	private static void startGUI()
@@ -165,5 +174,6 @@ public class project1 {
 	    
         CSVarray.add( row ); // Add new row if index is out of bounds
 	}
+//----------------------------------------------------------------------------------------
 }
 //--------------------------------------------------------------------------------------
