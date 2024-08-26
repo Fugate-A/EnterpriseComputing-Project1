@@ -1,10 +1,9 @@
-package Project1;
+import javax.swing.*;
 
-public class main {
+public class project1 {
 
 	public static void main(String[] args)
 	{
 		//gg
 	}
-
 }
