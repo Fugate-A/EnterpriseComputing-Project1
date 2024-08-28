@@ -150,14 +150,35 @@ public class project1{
 	{		
 		for( ArrayList < String > s : CSVarray )
 		{
-			if( s.get(0).equals( itemIdInput.getText().trim() ) )
+			if( s.get(0).equals( itemIdInput.getText().trim() ) )//exists
 			{
-				//System.out.println("FOUND IT");
+				if( s.get(2).toLowerCase().equals( "true" ) )//in stock
+				{
+					//make the line3 output show the entire detail row
+					System.out.println("found it");
+				}
+				
+				else if( quantityInput.getText().isBlank() )//has a quantity
+				{
+					System.out.println("quantity field left blank");
+					return;
+				}
+				
+	            else if( Integer.parseInt( s.get(3) ) < Integer.parseInt( quantityInput.getText().trim() ) && s.get(2).toLowerCase().equals( "true" ) )//has enough quantity
+				{
+					JOptionPane.showMessageDialog(null, "Quantity Not Available", "Not Available", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Item Out of Stock", "Not Available", JOptionPane.ERROR_MESSAGE);
+				}
+				
 				return;
 			}
 		}
 		
-		//system.out.println("not found");
+		JOptionPane.showMessageDialog(null, "Item ID Not Found", "Not Available", JOptionPane.ERROR_MESSAGE);
 	}
 //----------------------------------------------------------------------------------------
 	private static void openAndReadFile()
