@@ -14,14 +14,20 @@ import javax.swing.*;
 public class project1{
 
     static ArrayList < ArrayList < String > > CSVarray = new ArrayList<>();
+    
+    static JTextField itemIdInput = null;
+    static JTextField quantityInput = null;
+    static JTextField itemDetailsOutput = null;
+    static JTextField subtotalOutput = null;
 //----------------------------------------------------------------------------------------
 	public static void main(String[] args)
 	{
 		openAndReadFile();
 		
-		arrayView();
+		//arrayView();
 
 		startGUI();
+		
 	}
 //----------------------------------------------------------------------------------------
 	private static void arrayView()
@@ -37,7 +43,7 @@ public class project1{
 		        System.out.println( "Column " + (j + 1) + ": " + row.get(j) );
 		    }
 		    
-		    System.out.println(); // Print a blank line for better readability between rows
+		    System.out.println();
 		}
 	}
 //----------------------------------------------------------------------------------------
@@ -61,10 +67,10 @@ public class project1{
 	    JLabel line3 = new JLabel("Details for item #:");
 	    JLabel line4 = new JLabel("Current sub-total for x items:");
 
-	    JTextField itemIdInput = new JTextField();
-	    JTextField quantityInput = new JTextField();
-	    JTextField itemDetailsOutput = new JTextField();
-	    JTextField subtotalOutput = new JTextField();
+	    itemIdInput = new JTextField();
+	    quantityInput = new JTextField();
+	    itemDetailsOutput = new JTextField();
+	    subtotalOutput = new JTextField();
 	    
 	    itemDetailsOutput.setEditable(false);
 	    subtotalOutput.setEditable(false);
@@ -125,7 +131,12 @@ public class project1{
 	    startPage.add(exitButton).setBounds(220, bottomThirdStart + 10 + 2 * buttonVerticalSpacing, 200, 30);
 
 	    //ActionListeners for buttons
-	    searchButton.addActionListener(e -> System.out.println("Search button clicked"));
+	    searchButton.addActionListener( e -> searchCSV() );
+	    
+	    
+	    
+	    
+	    
 	    viewCartButton.addActionListener(e -> System.out.println("View Cart button clicked"));
 	    emptyCart.addActionListener(e -> System.out.println("Empty Cart button clicked"));
 	    addItemButton.addActionListener(e -> System.out.println("Add Item button clicked"));
@@ -135,7 +146,20 @@ public class project1{
 	    startPage.setVisible(true);
 	}
 //----------------------------------------------------------------------------------------
-
+	private static void searchCSV()
+	{		
+		for( ArrayList < String > s : CSVarray )
+		{
+			if( s.get(0).equals( itemIdInput.getText().trim() ) )
+			{
+				//System.out.println("FOUND IT");
+				return;
+			}
+		}
+		
+		//system.out.println("not found");
+	}
+//----------------------------------------------------------------------------------------
 	private static void openAndReadFile()
 	{
 		try
