@@ -14,6 +14,8 @@ import javax.swing.*;
 public class project1{
 	
 	static int itemCounter = 1;
+    static int cartItemCount = 0;
+
 
     static ArrayList < ArrayList < String > > CSVarray = new ArrayList<>();
     
@@ -33,6 +35,12 @@ public class project1{
     static JButton addItemButton = new JButton( "Add Item " + itemCounter + " to Cart" );
     static JButton checkoutButton = new JButton( "Checkout" );
     static JButton exitButton = new JButton( "Exit (close app)" );
+    
+    static JTextField cartItem1 = new JTextField();
+    static JTextField cartItem2 = new JTextField();
+    static JTextField cartItem3 = new JTextField();
+    static JTextField cartItem4 = new JTextField();
+    static JTextField cartItem5 = new JTextField();
     
 //----------------------------------------------------------------------------------------
 	public static void main(String[] args)
@@ -67,7 +75,7 @@ public class project1{
 	    itemDetailsOutput.setEditable(false);
 	    subtotalOutput.setEditable(false);
 
-	    //top third spacing
+	    // Top third spacing
 	    int topThirdVerticalSpacing = topThirdHeight / 4;
 	    startPage.add(line1).setBounds(10, 10, 200, 30);
 	    startPage.add(itemIdInput).setBounds(220, 10, 300, 30);
@@ -81,21 +89,16 @@ public class project1{
 	    startPage.add(line4).setBounds(10, 10 + 3 * topThirdVerticalSpacing, 200, 30);
 	    startPage.add(subtotalOutput).setBounds(220, 10 + 3 * topThirdVerticalSpacing, 300, 30);
 
-	    //middle third section
+	    // Middle third section
 	    JLabel cartTitle = new JLabel("Shopping Cart");
-	    JTextField cartItem1 = new JTextField();
-	    JTextField cartItem2 = new JTextField();
-	    JTextField cartItem3 = new JTextField();
-	    JTextField cartItem4 = new JTextField();
-	    JTextField cartItem5 = new JTextField();
-
+	    
 	    cartItem1.setEditable(false);
 	    cartItem2.setEditable(false);
 	    cartItem3.setEditable(false);
 	    cartItem4.setEditable(false);
 	    cartItem5.setEditable(false);
 
-	    //middle third spacing
+	    // Middle third spacing
 	    int middleThirdVerticalSpacing = topThirdHeight / 7;
 	    startPage.add(cartTitle).setBounds(10, middleThirdStart + 10, 200, 30);
 	    startPage.add(cartItem1).setBounds(10, middleThirdStart + 10 + middleThirdVerticalSpacing, 300, 30);
@@ -104,9 +107,7 @@ public class project1{
 	    startPage.add(cartItem4).setBounds(10, middleThirdStart + 10 + 4 * middleThirdVerticalSpacing, 300, 30);
 	    startPage.add(cartItem5).setBounds(10, middleThirdStart + 10 + 5 * middleThirdVerticalSpacing, 300, 30);
 
-	    //bottom third section - moved to global vars
-	    
-	    //bottom third spacing
+	    // Bottom third section
 	    int buttonVerticalSpacing = topThirdHeight / 4;
 	    startPage.add(searchButton).setBounds(10, bottomThirdStart + 10, 200, 30);
 	    startPage.add(viewCartButton).setBounds(10, bottomThirdStart + 10 + buttonVerticalSpacing, 200, 30);
@@ -116,7 +117,7 @@ public class project1{
 	    startPage.add(checkoutButton).setBounds(220, bottomThirdStart + 10 + buttonVerticalSpacing, 200, 30);
 	    startPage.add(exitButton).setBounds(220, bottomThirdStart + 10 + 2 * buttonVerticalSpacing, 200, 30);
 
-	    //ActionListeners for buttons
+	    // ActionListeners for buttons
 	    searchButton.addActionListener( e -> searchCSV() );
 	    
 	    addItemButton.addActionListener(e -> addToCartButtonPush() );
@@ -133,7 +134,67 @@ public class project1{
 //----------------------------------------------------------------------------------------
 	private static void addToCartButtonPush()
 	{
-		
+	    String itemDetails = itemDetailsOutput.getText();
+	    if( itemDetails.isBlank() )
+	    {
+	        JOptionPane.showMessageDialog( null, "No item details to add", "Error", JOptionPane.ERROR_MESSAGE);
+	        return;
+	    }
+	    
+	    cartItemCount++;
+	    
+	    switch( cartItemCount )
+	    {
+	        case 1: cartItem1.setText(itemDetails); break;
+	        case 2: cartItem2.setText(itemDetails); break;
+	        case 3: cartItem3.setText(itemDetails); break;
+	        case 4: cartItem4.setText(itemDetails); break;
+	        case 5: cartItem5.setText(itemDetails); break;
+	        default:
+	            JOptionPane.showMessageDialog(null, "Cart is full", "Error", JOptionPane.ERROR_MESSAGE);
+	            break;
+	    }
+
+	    // Clear inputs and details
+	    itemIdInput.setText("");
+	    quantityInput.setText("");
+	    itemDetailsOutput.setText("");
+	    subtotalOutput.setText("");
+
+	    // Update item counter
+	    itemCounter++;
+	    
+	    searchButton.setText("Search for item " + itemCounter );
+	    addItemButton.setText("Add Item " + itemCounter + " to Cart");
+	    
+	    if( itemCounter > 5 )
+	    {
+	    	cartFullButtons();
+	    }
+	    
+	    else
+	    {
+	    	ButtonsOnLaunch();
+	    }
+	    
+	    line1.setText("Enter item ID for item " + itemCounter + ":");
+	    line2.setText("Enter quantity for item " + itemCounter + ":");
+	    line3.setText("Details for item " + itemCounter + ":");
+	    line4.setText("Current sub-total for " + (itemCounter - 1) + " items:");
+	    
+	}
+//----------------------------------------------------------------------------------------
+	private static void cartFullButtons()
+	{
+		searchButton.setText("Search for item " + 5 );
+	    addItemButton.setText("Add Item " + 5 + " to Cart");
+	    
+		searchButton.setEnabled( false );
+	    viewCartButton.setEnabled( true );
+	    emptyCart.setEnabled( true );
+	    addItemButton.setEnabled( false );
+	    checkoutButton.setEnabled( true );
+	    exitButton.setEnabled( true );
 	}
 //----------------------------------------------------------------------------------------
 	private static void topThirdLabels()
@@ -150,7 +211,7 @@ public class project1{
 		{			
 			if( s.get(0).equals( itemIdInput.getText().trim() ) )//exists
 			{
-				if( quantityInput.getText().isBlank() )//has a quantity
+				if( quantityInput.getText().isBlank() )//!has a quantity
 				{
 					JOptionPane.showMessageDialog(null, "Please Enter a Quantity", "Search Error", JOptionPane.ERROR_MESSAGE);
 				}
@@ -162,6 +223,7 @@ public class project1{
 				
 				else if( s.get(2).toLowerCase().equals( "true" ) )//in stock
 				{
+					ButtonsAfterSearch();
 	                updateDetailsLine( s, quantityInput.getText() );
 				}
 				
@@ -169,8 +231,6 @@ public class project1{
 				{
 					JOptionPane.showMessageDialog(null, "Item Out of Stock", "Not Available", JOptionPane.ERROR_MESSAGE);
 				}
-				
-				ButtonsAfterSearch();
 				
 				return;
 			}
