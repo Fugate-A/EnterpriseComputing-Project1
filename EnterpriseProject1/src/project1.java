@@ -27,7 +27,6 @@ public class project1{
 		//arrayView();
 
 		startGUI();
-		
 	}
 //----------------------------------------------------------------------------------------
 	private static void arrayView()
@@ -78,16 +77,16 @@ public class project1{
 	    //top third spacing
 	    int topThirdVerticalSpacing = topThirdHeight / 4;
 	    startPage.add(line1).setBounds(10, 10, 200, 30);
-	    startPage.add(itemIdInput).setBounds(220, 10, 150, 30);
+	    startPage.add(itemIdInput).setBounds(220, 10, 300, 30);
 
 	    startPage.add(line2).setBounds(10, 10 + topThirdVerticalSpacing, 200, 30);
-	    startPage.add(quantityInput).setBounds(220, 10 + topThirdVerticalSpacing, 150, 30);
+	    startPage.add(quantityInput).setBounds(220, 10 + topThirdVerticalSpacing, 300, 30);
 
 	    startPage.add(line3).setBounds(10, 10 + 2 * topThirdVerticalSpacing, 200, 30);
-	    startPage.add(itemDetailsOutput).setBounds(220, 10 + 2 * topThirdVerticalSpacing, 150, 30);
+	    startPage.add(itemDetailsOutput).setBounds(220, 10 + 2 * topThirdVerticalSpacing, 300, 30);
 
 	    startPage.add(line4).setBounds(10, 10 + 3 * topThirdVerticalSpacing, 200, 30);
-	    startPage.add(subtotalOutput).setBounds(220, 10 + 3 * topThirdVerticalSpacing, 150, 30);
+	    startPage.add(subtotalOutput).setBounds(220, 10 + 3 * topThirdVerticalSpacing, 300, 30);
 
 	    //middle third section
 	    JLabel cartTitle = new JLabel("Shopping Cart");
@@ -152,21 +151,19 @@ public class project1{
 		{
 			if( s.get(0).equals( itemIdInput.getText().trim() ) )//exists
 			{
-				if( s.get(2).toLowerCase().equals( "true" ) )//in stock
+				if( quantityInput.getText().isBlank() )//has a quantity
 				{
-					//make the line3 output show the entire detail row
-					System.out.println("found it");
+					JOptionPane.showMessageDialog(null, "Please Enter a Quantity", "Search Error", JOptionPane.ERROR_MESSAGE);
 				}
 				
-				else if( quantityInput.getText().isBlank() )//has a quantity
-				{
-					System.out.println("quantity field left blank");
-					return;
-				}
-				
-	            else if( Integer.parseInt( s.get(3) ) < Integer.parseInt( quantityInput.getText().trim() ) && s.get(2).toLowerCase().equals( "true" ) )//has enough quantity
+				else if( Integer.parseInt( s.get(3) ) < Integer.parseInt( quantityInput.getText().trim() ) && s.get(2).toLowerCase().equals( "true" ) )//has enough quantity
 				{
 					JOptionPane.showMessageDialog(null, "Quantity Not Available", "Not Available", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				else if( s.get(2).toLowerCase().equals( "true" ) )//in stock
+				{
+	                updateDetailsLine( s, quantityInput.getText() );
 				}
 				
 				else
@@ -179,6 +176,57 @@ public class project1{
 		}
 		
 		JOptionPane.showMessageDialog(null, "Item ID Not Found", "Not Available", JOptionPane.ERROR_MESSAGE);
+	}
+//----------------------------------------------------------------------------------------
+	private static void updateDetailsLine( ArrayList < String > s, String quant )
+	{
+        String id = s.get(0);
+        String priceNotFormated = s.get(4);
+        
+        String descriptionForDisplay = s.get(1).substring(3, s.get(1).length() - 2);
+
+        int discountValueAsPercent = discountValue( Integer.parseInt( quant ) );
+        
+        double SubForItemQuant = calculateItemSub( Double.parseDouble( s.get(4) ), Integer.parseInt( quant), discountValueAsPercent );
+        
+        itemDetailsOutput.setText( id + " " + descriptionForDisplay + " $" + priceNotFormated + " " + quant + " " + discountValueAsPercent + "% $" + SubForItemQuant );
+	}
+//-----------------------------------------------------------------------------------------
+	private static double calculateItemSub( double pricePer, int quant, int disc )
+	{
+		if( disc > 0 )
+		{
+			double multVal = 1.0 - disc / 100.0;
+			return quant * pricePer * multVal;
+		}
+		
+		else
+		{
+			return quant * pricePer;
+		}
+	}
+//----------------------------------------------------------------------------------------
+	private static int discountValue( int quant )
+	{
+		if( quant > 14 )
+		{
+			return 20;
+		}
+		
+		else if( quant > 9 )
+		{
+			return 15;
+		}
+		
+		else if( quant > 4 )
+		{
+			return 10;
+		}
+		
+		else
+		{
+			return 0;
+		}
 	}
 //----------------------------------------------------------------------------------------
 	private static void openAndReadFile()
