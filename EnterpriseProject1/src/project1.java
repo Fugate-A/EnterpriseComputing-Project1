@@ -12,6 +12,8 @@ import java.util.Scanner;
 import javax.swing.*;
 //----------------------------------------------------------------------------------------
 public class project1{
+	
+	static int itemCounter = 1;
 
     static ArrayList < ArrayList < String > > CSVarray = new ArrayList<>();
     
@@ -19,31 +21,25 @@ public class project1{
     static JTextField quantityInput = null;
     static JTextField itemDetailsOutput = null;
     static JTextField subtotalOutput = null;
+    
+    static JLabel line1 = null;
+    static JLabel line2 = null;
+    static JLabel line3 = null;
+    static JLabel line4 = null;
+    
+    static JButton searchButton = new JButton( "Search for item " + itemCounter );
+    static JButton viewCartButton = new JButton( "View Cart" );
+    static JButton emptyCart = new JButton( "Empty Cart" );
+    static JButton addItemButton = new JButton( "Add Item " + itemCounter + " to Cart" );
+    static JButton checkoutButton = new JButton( "Checkout" );
+    static JButton exitButton = new JButton( "Exit (close app)" );
+    
 //----------------------------------------------------------------------------------------
 	public static void main(String[] args)
 	{
 		openAndReadFile();
-		
-		//arrayView();
 
 		startGUI();
-	}
-//----------------------------------------------------------------------------------------
-	private static void arrayView()
-	{
-		for( int i = 0; i < CSVarray.size(); i++ )
-		{
-		    ArrayList<String> row = CSVarray.get(i);
-		    
-		    System.out.println( "This is row " + i + " of the ArrayList and it contains:" );
-		    
-		    for( int j = 0; j < row.size(); j++ )
-		    {
-		        System.out.println( "Column " + (j + 1) + ": " + row.get(j) );
-		    }
-		    
-		    System.out.println();
-		}
 	}
 //----------------------------------------------------------------------------------------
 	private static void startGUI()
@@ -61,10 +57,7 @@ public class project1{
 	    startPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	    // Top third section
-	    JLabel line1 = new JLabel("Enter item ID for item #:");
-	    JLabel line2 = new JLabel("Enter quantity for item #:");
-	    JLabel line3 = new JLabel("Details for item #:");
-	    JLabel line4 = new JLabel("Current sub-total for x items:");
+	    topThirdLabels();
 
 	    itemIdInput = new JTextField();
 	    quantityInput = new JTextField();
@@ -111,14 +104,8 @@ public class project1{
 	    startPage.add(cartItem4).setBounds(10, middleThirdStart + 10 + 4 * middleThirdVerticalSpacing, 300, 30);
 	    startPage.add(cartItem5).setBounds(10, middleThirdStart + 10 + 5 * middleThirdVerticalSpacing, 300, 30);
 
-	    //bottom third section
-	    JButton searchButton = new JButton("Search for item #");
-	    JButton viewCartButton = new JButton("View Cart");
-	    JButton emptyCart = new JButton("Empty Cart");
-	    JButton addItemButton = new JButton("Add Item # to Cart");
-	    JButton checkoutButton = new JButton("Checkout");
-	    JButton exitButton = new JButton("Exit (close app)");
-
+	    //bottom third section - moved to global vars
+	    
 	    //bottom third spacing
 	    int buttonVerticalSpacing = topThirdHeight / 4;
 	    startPage.add(searchButton).setBounds(10, bottomThirdStart + 10, 200, 30);
@@ -132,23 +119,35 @@ public class project1{
 	    //ActionListeners for buttons
 	    searchButton.addActionListener( e -> searchCSV() );
 	    
-	    
-	    
-	    
+	    addItemButton.addActionListener(e -> addToCartButtonPush() );
 	    
 	    viewCartButton.addActionListener(e -> System.out.println("View Cart button clicked"));
 	    emptyCart.addActionListener(e -> System.out.println("Empty Cart button clicked"));
-	    addItemButton.addActionListener(e -> System.out.println("Add Item button clicked"));
+	    
 	    checkoutButton.addActionListener(e -> System.out.println("Checkout button clicked"));
 	    exitButton.addActionListener(e -> System.exit(0));
 
 	    startPage.setVisible(true);
+	    ButtonsOnLaunch();
+	}
+//----------------------------------------------------------------------------------------
+	private static void addToCartButtonPush()
+	{
+		
+	}
+//----------------------------------------------------------------------------------------
+	private static void topThirdLabels()
+	{
+		line1 = new JLabel("Enter item ID for item " + itemCounter + ":");
+	    line2 = new JLabel("Enter quantity for item " + itemCounter + ":");
+	    line3 = new JLabel("Details for item " + itemCounter + ":");
+	    line4 = new JLabel("Current sub-total for " + (itemCounter - 1) + " items:");
 	}
 //----------------------------------------------------------------------------------------
 	private static void searchCSV()
 	{		
 		for( ArrayList < String > s : CSVarray )
-		{
+		{			
 			if( s.get(0).equals( itemIdInput.getText().trim() ) )//exists
 			{
 				if( quantityInput.getText().isBlank() )//has a quantity
@@ -170,6 +169,8 @@ public class project1{
 				{
 					JOptionPane.showMessageDialog(null, "Item Out of Stock", "Not Available", JOptionPane.ERROR_MESSAGE);
 				}
+				
+				ButtonsAfterSearch();
 				
 				return;
 			}
@@ -241,8 +242,7 @@ public class project1{
 	        while( scanner.hasNextLine() )
 	        {
 	            String line = scanner.nextLine();
-	            //System.out.println( line );
-	            parseToDoubleArray( line, scanLoop );
+	            parseTo2dArray( line, scanLoop );
 	            scanLoop++;
 	        }
 	
@@ -255,7 +255,7 @@ public class project1{
         }
 	}
 //----------------------------------------------------------------------------------------
-	static void parseToDoubleArray( String scan, int index )
+	static void parseTo2dArray( String scan, int index )
 	{
 		String[] passed = scan.split(","); // Split the line by commas
 	    ArrayList < String > row = new ArrayList<>();
@@ -268,5 +268,35 @@ public class project1{
         CSVarray.add( row ); // Add new row if index is out of bounds
 	}
 //----------------------------------------------------------------------------------------
+	private static void ButtonsOnLaunch()
+	{
+	    searchButton.setEnabled( true );
+	    viewCartButton.setEnabled( false );
+	    emptyCart.setEnabled( true );
+	    addItemButton.setEnabled( false );
+	    checkoutButton.setEnabled( false );
+	    exitButton.setEnabled( true );
+	}
+//----------------------------------------------------------------------------------------
+	private static void ButtonsAfterSearch()
+	{
+	    searchButton.setEnabled( false );
+	    viewCartButton.setEnabled( false );
+	    emptyCart.setEnabled( true );
+	    addItemButton.setEnabled( true );
+	    checkoutButton.setEnabled( false );
+	    exitButton.setEnabled( true );
+	}
+//----------------------------------------------------------------------------------------
+	private static void ButtonTempVis2()
+	{
+	    searchButton.setEnabled( true );
+	    viewCartButton.setEnabled( false );
+	    emptyCart.setEnabled( true );
+	    addItemButton.setEnabled( false );
+	    checkoutButton.setEnabled( false );
+	    exitButton.setEnabled( true );
+	}
+//----------------------------------------------------------------------------------------
 }
-//--------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
