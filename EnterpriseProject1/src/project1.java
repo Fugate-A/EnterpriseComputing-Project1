@@ -165,22 +165,22 @@ public class project1{
 	    
 	    if( !cartItem2.getText().isEmpty() )
 	    {
-	    	checkoutSummary.append("1. ").append( TopThirdDetailsOfCartItemsForPopUp.get(1) ).append("\n");
+	    	checkoutSummary.append("2. ").append( TopThirdDetailsOfCartItemsForPopUp.get(1) ).append("\n");
 	    }
 	    
 	    if( !cartItem3.getText().isEmpty() )
 	    {
-	    	checkoutSummary.append("1. ").append( TopThirdDetailsOfCartItemsForPopUp.get(2) ).append("\n");
+	    	checkoutSummary.append("3. ").append( TopThirdDetailsOfCartItemsForPopUp.get(2) ).append("\n");
 	    }
 	    
 	    if( !cartItem4.getText().isEmpty() )
 	    {
-	    	checkoutSummary.append("1. ").append( TopThirdDetailsOfCartItemsForPopUp.get(3) ).append("\n");
+	    	checkoutSummary.append("4. ").append( TopThirdDetailsOfCartItemsForPopUp.get(3) ).append("\n");
 	    }
 	    
 	    if( !cartItem5.getText().isEmpty() )
 	    {
-	    	checkoutSummary.append("1. ").append( TopThirdDetailsOfCartItemsForPopUp.get(4) ).append("\n");
+	    	checkoutSummary.append("5. ").append( TopThirdDetailsOfCartItemsForPopUp.get(4) ).append("\n");
 	    }
 
 	    double subtotal = calculateOrderSubtotal();
@@ -210,7 +210,16 @@ public class project1{
 		String TransID = Decon.substring( 15, 34 );
 		TransID = TransID.replace( "/", "" ).replace( ":", "" ).replace( " ", "" );
 		
-		System.out.println( TopThirdDetailsOfCartItemsForPopUp.toString() );
+		int i = 0;
+		
+		for( String p : TopThirdDetailsOfCartItemsForPopUp )
+		{
+			System.out.println( TransID + ", " + TopThirdDetailsOfCartItemsForPopUp.get( i ).replace(" ", ", ").replace( "%", ".0" ) + ", " );
+			
+			i++;
+		}
+		
+		//System.out.println( TopThirdDetailsOfCartItemsForPopUp.toString() );
 				
 		//String dataToAppend = String.format("%s,%s,%s\n", formattedSubtotal, formattedTax, formattedTotal);
 
@@ -242,7 +251,7 @@ public class project1{
 	    	}
 	    }
 	    
-	    return subtotal;
+	    return Double.parseDouble( String.format( "%.2f" , subtotal ) );
 	}
 //----------------------------------------------------------------------------------------
 	private static void viewCartButton()
@@ -429,12 +438,12 @@ public class project1{
 		if( disc > 0 )
 		{
 			double multVal = 1.0 - disc / 100.0;
-			return quant * pricePer * multVal;
+			return Double.parseDouble( String.format( "%.2f" , quant * pricePer * multVal ) );
 		}
 		
 		else
 		{
-			return quant * pricePer;
+			return Double.parseDouble( String.format( "%.2f" , quant * pricePer ) );
 		}
 	}
 //----------------------------------------------------------------------------------------
