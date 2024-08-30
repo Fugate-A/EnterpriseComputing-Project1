@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.*;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.Locale;
 //----------------------------------------------------------------------------------------
@@ -243,7 +247,7 @@ public class project1{
 			
 			//System.out.println( TransID + ", " + tempBTQ + tempITQ.trim() + ", " + tempATQ + " " + String.format( "%.2f" , Double.parseDouble( splitATQ ) / 100 ) + ", " + ATD );
 			
-			String StoreInCSV = TransID + ", " + tempBTQ + tempITQ + tempATQ + " " + String.format( "%.2f" , Double.parseDouble( splitATQ ) / 100 ) + " " + ATD ;
+			String StoreInCSV = TransID + ", " + tempBTQ + tempITQ + tempATQ + " " + String.format( "%.2f" , Double.parseDouble( splitATQ ) / 100 ) + " " + ATD + DateFormatter( TransID ) ;
 			
 			fileWrite( StoreInCSV );
 			
@@ -252,6 +256,26 @@ public class project1{
 		
 		fileWrite( "EndOfCurrentTransactionAddTwoLinesForSpacing" );
 	}
+//----------------------------------------------------------------------------------------
+	private static String DateFormatter(String dateCode )
+	{
+		try
+		{
+            DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern( "ddMMyyyyHHmmss" );
+
+            LocalDateTime dateTime = LocalDateTime.parse( dateCode , inputFormatter );
+
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern( ", MMMM d, yyyy, hh:mm:ss a z" );
+ 
+            return dateTime.atZone( ZoneId.systemDefault() ).format( outputFormatter );
+        }
+		
+		catch( DateTimeParseException e )
+		{
+            e.printStackTrace(); // Handle the exception if the parsing fails
+            return null; // or return an error message or default value
+        }
+    }
 //----------------------------------------------------------------------------------------
 	private static void fileWrite( String store ) 
 	{
