@@ -10,6 +10,9 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 //----------------------------------------------------------------------------------------
 public class project1{
 	
@@ -130,13 +133,89 @@ public class project1{
 	    
 	    viewCartButton.addActionListener( e -> viewCartButton() );
 
-	    checkoutButton.addActionListener( e -> System.out.println("Checkout button clicked") );
+	    checkoutButton.addActionListener( e -> checkoutButtonClick() );
 	    
 	    exitButton.addActionListener( e -> System.exit(0) );
 
 	    startPage.setVisible(true);
 	    
 	    ButtonsOnLaunch();
+	}
+//----------------------------------------------------------------------------------------	
+	private static void checkoutButtonClick()
+	{
+		ButtonsAfterCheckoutClick();
+		
+	    SimpleDateFormat sdf = new SimpleDateFormat( "dd/MM/yy HH:mm:ss" , Locale.getDefault() );
+	    
+	    String currentDateTime = sdf.format( new Date() );
+
+	    StringBuilder checkoutSummary = new StringBuilder();
+
+	    checkoutSummary.append( "Date and Time: " ).append( currentDateTime ).append("\n\n");
+
+	    checkoutSummary.append( "Number of line items: " ).append( cartItemCount ).append("\n\n");
+
+	    checkoutSummary.append( "Item# / ID / Title / Price / Qty / Disc % / Subtotal:\n\n" );
+
+	    if( !cartItem1.getText().isEmpty() )
+	    {
+	    	checkoutSummary.append("1. ").append( TopThirdDetailsOfCartItemsForPopUp.get(0) ).append("\n");
+	    }
+	    
+	    if( !cartItem2.getText().isEmpty() )
+	    {
+	    	checkoutSummary.append("1. ").append( TopThirdDetailsOfCartItemsForPopUp.get(1) ).append("\n");
+	    }
+	    
+	    if( !cartItem3.getText().isEmpty() )
+	    {
+	    	checkoutSummary.append("1. ").append( TopThirdDetailsOfCartItemsForPopUp.get(2) ).append("\n");
+	    }
+	    
+	    if( !cartItem4.getText().isEmpty() )
+	    {
+	    	checkoutSummary.append("1. ").append( TopThirdDetailsOfCartItemsForPopUp.get(3) ).append("\n");
+	    }
+	    
+	    if( !cartItem5.getText().isEmpty() )
+	    {
+	    	checkoutSummary.append("1. ").append( TopThirdDetailsOfCartItemsForPopUp.get(4) ).append("\n");
+	    }
+
+	    double subtotal = calculateOrderSubtotal();
+	    
+	    checkoutSummary.append( "\nOrder subtotal: $" ).append( String.format( "%.2f", subtotal ) ).append("\n\n");
+
+	    double taxRate = 0.06; //6%
+	    
+	    double taxAmount = subtotal * taxRate;
+	    
+	    checkoutSummary.append( "Tax rate: 6%\n" );
+	    checkoutSummary.append( "Tax amount: $" ).append( String.format( "%.2f", taxAmount ) ).append("\n");
+	    
+	    checkoutSummary.append( "ORDER TOTAL: $").append( String.format( "%.2f", subtotal + taxAmount ) ).append( "\n\nThanks for shopping at Nile Dot Com!");
+	    
+	    JOptionPane.showMessageDialog(null, checkoutSummary.toString(), "Checkout Summary", JOptionPane.INFORMATION_MESSAGE);
+	}
+//----------------------------------------------------------------------------------------	
+	private static double calculateOrderSubtotal()
+	{
+	    double subtotal = 0.0;
+
+	    if( !TopThirdDetailsOfCartItemsForPopUp.isEmpty() )
+	    {
+	    	int index = 0;
+	    	
+	    	for( String s : TopThirdDetailsOfCartItemsForPopUp )
+	    	{
+	    		subtotal = subtotal + Double.parseDouble( TopThirdDetailsOfCartItemsForPopUp.get( index ).substring( TopThirdDetailsOfCartItemsForPopUp.get(index).length() - 4 ) );
+	    		
+	    		index++;
+	    	}
+	    }
+	    
+	    return subtotal;
 	}
 //----------------------------------------------------------------------------------------
 	private static void viewCartButton()
@@ -202,7 +281,7 @@ public class project1{
 
 		cartItemCount++;
 
-		itemDetails = "Item " + cartItemCount + " - SKU: " + sku + ", Desc: " + description + ", Price Ea. " + price + ", Qty: " + quantity + ", Discount: " + discount + ", Total: " + total;
+		itemDetails = "Item " + cartItemCount + " - SKU: " + sku + ", Desc: " + description + ", Price Ea. " + price + ", Qty: " + quantity + ", Total: " + total;
 
 	    switch( cartItemCount )
 	    {
@@ -244,6 +323,8 @@ public class project1{
 	    line2.setText("Enter quantity for item " + itemCounter + ":");
 	    line3.setText("Details for item " + itemCounter + ":");
 	    line4.setText("Current sub-total for " + (itemCounter - 1) + " items:");
+	    
+	    subtotalOutput.setText( "$" + String.format( "%.2f", calculateOrderSubtotal() ) );
 	    
 	}
 //----------------------------------------------------------------------------------------
@@ -419,15 +500,18 @@ public class project1{
 	    itemIdInput.setVisible(false);
     	quantityInput.setVisible(false);
 	}
-//----------------------------------------------------------------------------------------
-	private static void ButtonTempVis2()
+//----------------------------------------------------------------------------------------	
+	private static void ButtonsAfterCheckoutClick()
 	{
-	    searchButton.setEnabled( true );
+		searchButton.setEnabled( false );
 	    viewCartButton.setEnabled( false );
 	    emptyCart.setEnabled( true );
 	    addItemButton.setEnabled( false );
 	    checkoutButton.setEnabled( false );
 	    exitButton.setEnabled( true );
+	    
+	    itemIdInput.setEditable(false);
+	    quantityInput.setEditable(false);
 	}
 //----------------------------------------------------------------------------------------
 	private static void resetApp( JFrame frame )
