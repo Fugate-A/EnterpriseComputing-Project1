@@ -241,27 +241,45 @@ public class project1{
 			
 			tempATQ = tempATQ.substring( 0 , ci + 1 );
 			
-			//System.out.println( TransID + ", " + tempBTQ + tempITQ + tempATQ + " " + String.format( "%.2f" , Double.parseDouble( splitATQ ) / 100 ) + " " + ATD );
+			//System.out.println( TransID + ", " + tempBTQ + tempITQ.trim() + ", " + tempATQ + " " + String.format( "%.2f" , Double.parseDouble( splitATQ ) / 100 ) + ", " + ATD );
 			
 			String StoreInCSV = TransID + ", " + tempBTQ + tempITQ + tempATQ + " " + String.format( "%.2f" , Double.parseDouble( splitATQ ) / 100 ) + " " + ATD ;
+			
+			fileWrite( StoreInCSV );
 			
 			i++;
 		}
 		
-		//System.out.println( TopThirdDetailsOfCartItemsForPopUp.toString() );
-				
-		//String dataToAppend = String.format("%s,%s,%s\n", formattedSubtotal, formattedTax, formattedTotal);
-
-       /* try( FileWriter fileWriter = new FileWriter( "transactions.csv", true ) )
-        {
-            //fileWriter.append(dataToAppend);
-            System.out.println("Data appended successfully!");
-        }
-        
-        catch( IOException e )
-        {
-            System.err.println("Error appending data to file: " + e.getMessage());
-        }*/
+		fileWrite( "EndOfCurrentTransactionAddTwoLinesForSpacing" );
+	}
+//----------------------------------------------------------------------------------------
+	private static void fileWrite( String store ) 
+	{
+		if( store == "EndOfCurrentTransactionAddTwoLinesForSpacing" )
+		{
+			try( FileWriter writer = new FileWriter( "transactions.csv", true ) )
+			{
+		        writer.write( "\n\n" );
+	        }
+			
+			catch( IOException e )
+			{
+	            e.printStackTrace();
+	        }
+		}
+		
+		else
+		{
+			try( FileWriter writer = new FileWriter( "transactions.csv", true ) )
+			{
+		        writer.write( store + "\n" );
+	        }
+			
+			catch( IOException e )
+			{
+	            e.printStackTrace();
+	        }
+		}
 	}
 //----------------------------------------------------------------------------------------	
 	private static double calculateOrderSubtotal()
