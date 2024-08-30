@@ -206,6 +206,11 @@ public class project1{
 	private static void OutputCSV( StringBuilder disp )
 	{
 		String Decon = disp.toString();
+		
+		String TransID = Decon.substring( 15, 34 );
+		TransID = TransID.replace( "/", "" ).replace( ":", "" ).replace( " ", "" );
+		
+		System.out.println( TopThirdDetailsOfCartItemsForPopUp.toString() );
 				
 		//String dataToAppend = String.format("%s,%s,%s\n", formattedSubtotal, formattedTax, formattedTotal);
 
