@@ -18,6 +18,7 @@ public class project1{
 
 
     static ArrayList < ArrayList < String > > CSVarray = new ArrayList<>();
+    static ArrayList < String > TopThirdDetailsOfCartItemsForPopUp = new ArrayList<>();
     
     static JTextField itemIdInput = null;
     static JTextField quantityInput = null;
@@ -123,24 +124,58 @@ public class project1{
 	    // ActionListeners for buttons
 	    searchButton.addActionListener( e -> searchCSV() );
 	    
-	    addItemButton.addActionListener(e -> addToCartButtonPush() );
+	    addItemButton.addActionListener( e -> addToCartButtonPush() );
 	    
 	    emptyCart.addActionListener( e -> resetApp( startPage ) );
 	    
-	    viewCartButton.addActionListener(e -> System.out.println("View Cart button clicked"));
+	    viewCartButton.addActionListener( e -> viewCartButton() );
 
-	    checkoutButton.addActionListener(e -> System.out.println("Checkout button clicked"));
+	    checkoutButton.addActionListener( e -> System.out.println("Checkout button clicked") );
 	    
-	    exitButton.addActionListener(e -> System.exit(0));
+	    exitButton.addActionListener( e -> System.exit(0) );
 
 	    startPage.setVisible(true);
 	    
 	    ButtonsOnLaunch();
 	}
 //----------------------------------------------------------------------------------------
+	private static void viewCartButton()
+	{
+	    StringBuilder cartDetails = new StringBuilder();
+	    
+	    if( !cartItem1.getText().isEmpty() )
+	    {
+	        cartDetails.append("1. ").append( TopThirdDetailsOfCartItemsForPopUp.get(0) ).append("\n");
+	    }
+	    
+	    if( !cartItem2.getText().isEmpty() )
+	    {
+	    	cartDetails.append("1. ").append( TopThirdDetailsOfCartItemsForPopUp.get(1) ).append("\n");
+	    }
+	    
+	    if( !cartItem3.getText().isEmpty() )
+	    {
+	    	cartDetails.append("1. ").append( TopThirdDetailsOfCartItemsForPopUp.get(2) ).append("\n");
+	    }
+	    
+	    if( !cartItem4.getText().isEmpty() )
+	    {
+	    	cartDetails.append("1. ").append( TopThirdDetailsOfCartItemsForPopUp.get(3) ).append("\n");
+	    }
+	    
+	    if( !cartItem5.getText().isEmpty() )
+	    {
+	    	cartDetails.append("1. ").append( TopThirdDetailsOfCartItemsForPopUp.get(4) ).append("\n");
+	    }
+
+	    JOptionPane.showMessageDialog(null, cartDetails.toString(), "Shopping Cart", JOptionPane.INFORMATION_MESSAGE);
+	}
+//----------------------------------------------------------------------------------------	
 	private static void addToCartButtonPush()
 	{
 		String itemDetails = itemDetailsOutput.getText();
+		
+		TopThirdDetailsOfCartItemsForPopUp.add( itemDetails );
 
 		if( itemDetails.isBlank() )
 		{
@@ -158,16 +193,17 @@ public class project1{
 
 		String sku = parts[0];
 		String description = itemDetails.substring(itemDetails.indexOf('"'), itemDetails.lastIndexOf('"') + 1);
-		String price = parts[parts.length - 3]; // Price Ea.
-		String quantity = parts[parts.length - 2]; // Qty
-		String total = parts[parts.length - 1]; // Total
-		String discount = parts[parts.length - 4]; // Discount
+
+		// Adjust the order to match the correct labels
+		String price = parts[parts.length - 4];    // Price Ea.
+		String quantity = parts[parts.length - 3]; // Qty
+		String discount = parts[parts.length - 2]; // Discount
+		String total = parts[parts.length - 1];    // Total
 
 		cartItemCount++;
 
 		itemDetails = "Item " + cartItemCount + " - SKU: " + sku + ", Desc: " + description + ", Price Ea. " + price + ", Qty: " + quantity + ", Discount: " + discount + ", Total: " + total;
 
-	    
 	    switch( cartItemCount )
 	    {
 	        case 1: cartItem1.setText(itemDetails); break;
