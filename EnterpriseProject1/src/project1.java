@@ -198,7 +198,7 @@ public class project1{
 	    
 	    OutputCSV( checkoutSummary );
 	    
-	    System.out.println( checkoutSummary.toString() );
+	    //System.out.println( checkoutSummary.toString() );
 	    
 	    JOptionPane.showMessageDialog(null, checkoutSummary.toString(), "Checkout Summary", JOptionPane.INFORMATION_MESSAGE);
 	}
@@ -214,7 +214,36 @@ public class project1{
 		
 		for( String p : TopThirdDetailsOfCartItemsForPopUp )
 		{
-			System.out.println( TransID + ", " + TopThirdDetailsOfCartItemsForPopUp.get( i ).replace(" ", ", ").replace( "%", ".0" ) + ", " );
+			String temp = TopThirdDetailsOfCartItemsForPopUp.get( i ).replace(" ", ", ").replace( "%", ".0" );
+			String tempBTQ = temp.substring( 0, temp.indexOf( "\"" ) );
+			
+			String tempITQ = temp.substring( temp.indexOf( "\"" ), temp.indexOf( "$" ) );
+			tempITQ = tempITQ.replace( ", " , " " );
+			
+			String tempATQ = temp.substring( temp.indexOf( "$" ) , temp.length() /*- 1*/ );
+			
+			String splitATQ = tempATQ;
+			String ATD = null;
+			
+			for( int j = 0; j < 2; j++ )
+			{
+				splitATQ = splitATQ.substring( splitATQ.indexOf( "," ) + 1 );
+			}
+			
+			splitATQ = splitATQ.trim();
+			ATD = splitATQ;
+			
+			splitATQ = splitATQ.substring( 0 , splitATQ.indexOf( "," ) );
+			ATD = ATD.substring( ATD.indexOf( "," ) + 2 );
+			
+			int ci = tempATQ.indexOf( "," );
+			ci = tempATQ.indexOf( "," , ci + 1 );
+			
+			tempATQ = tempATQ.substring( 0 , ci + 1 );
+			
+			//System.out.println( TransID + ", " + tempBTQ + tempITQ + tempATQ + " " + String.format( "%.2f" , Double.parseDouble( splitATQ ) / 100 ) + " " + ATD );
+			
+			String StoreInCSV = TransID + ", " + tempBTQ + tempITQ + tempATQ + " " + String.format( "%.2f" , Double.parseDouble( splitATQ ) / 100 ) + " " + ATD ;
 			
 			i++;
 		}
