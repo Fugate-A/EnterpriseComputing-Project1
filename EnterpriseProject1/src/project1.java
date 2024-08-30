@@ -55,11 +55,13 @@ public class project1{
 	    JFrame startPage = new JFrame();
 
 	    int frameHeight = 600;
-	    int frameWidth = 600;
+	    int frameWidth = 850;
 	    int topThirdHeight = frameHeight / 3;
 	    int middleThirdStart = topThirdHeight;
 	    int bottomThirdStart = 2 * frameHeight / 3;
 
+	    int CartItemWidth = 800;
+	    
 	    startPage.setLayout(null); // Disable layout
 	    startPage.setSize(frameWidth, frameHeight); // Frame size (width x, height y)
 	    startPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -98,14 +100,15 @@ public class project1{
 	    cartItem4.setEditable(false);
 	    cartItem5.setEditable(false);
 
-	    // Middle third spacing
+	 // Middle third spacing
 	    int middleThirdVerticalSpacing = topThirdHeight / 7;
 	    startPage.add(cartTitle).setBounds(10, middleThirdStart + 10, 200, 30);
-	    startPage.add(cartItem1).setBounds(10, middleThirdStart + 10 + middleThirdVerticalSpacing, 300, 30);
-	    startPage.add(cartItem2).setBounds(10, middleThirdStart + 10 + 2 * middleThirdVerticalSpacing, 300, 30);
-	    startPage.add(cartItem3).setBounds(10, middleThirdStart + 10 + 3 * middleThirdVerticalSpacing, 300, 30);
-	    startPage.add(cartItem4).setBounds(10, middleThirdStart + 10 + 4 * middleThirdVerticalSpacing, 300, 30);
-	    startPage.add(cartItem5).setBounds(10, middleThirdStart + 10 + 5 * middleThirdVerticalSpacing, 300, 30);
+	    startPage.add(cartItem1).setBounds(10, middleThirdStart + 10 + middleThirdVerticalSpacing, CartItemWidth, 30);
+	    startPage.add(cartItem2).setBounds(10, middleThirdStart + 10 + 2 * middleThirdVerticalSpacing, CartItemWidth, 30);
+	    startPage.add(cartItem3).setBounds(10, middleThirdStart + 10 + 3 * middleThirdVerticalSpacing, CartItemWidth, 30);
+	    startPage.add(cartItem4).setBounds(10, middleThirdStart + 10 + 4 * middleThirdVerticalSpacing, CartItemWidth, 30);
+	    startPage.add(cartItem5).setBounds(10, middleThirdStart + 10 + 5 * middleThirdVerticalSpacing, CartItemWidth, 30);
+
 
 	    // Bottom third section
 	    int buttonVerticalSpacing = topThirdHeight / 4;
@@ -122,26 +125,48 @@ public class project1{
 	    
 	    addItemButton.addActionListener(e -> addToCartButtonPush() );
 	    
-	    viewCartButton.addActionListener(e -> System.out.println("View Cart button clicked"));
-	    emptyCart.addActionListener(e -> System.out.println("Empty Cart button clicked"));
+	    emptyCart.addActionListener( e -> resetApp( startPage ) );
 	    
+	    viewCartButton.addActionListener(e -> System.out.println("View Cart button clicked"));
+
 	    checkoutButton.addActionListener(e -> System.out.println("Checkout button clicked"));
+	    
 	    exitButton.addActionListener(e -> System.exit(0));
 
 	    startPage.setVisible(true);
+	    
 	    ButtonsOnLaunch();
 	}
 //----------------------------------------------------------------------------------------
 	private static void addToCartButtonPush()
 	{
-	    String itemDetails = itemDetailsOutput.getText();
-	    if( itemDetails.isBlank() )
-	    {
-	        JOptionPane.showMessageDialog( null, "No item details to add", "Error", JOptionPane.ERROR_MESSAGE);
-	        return;
-	    }
-	    
-	    cartItemCount++;
+		String itemDetails = itemDetailsOutput.getText();
+
+		if( itemDetails.isBlank() )
+		{
+		    JOptionPane.showMessageDialog(null, "No item details to add", "Error", JOptionPane.ERROR_MESSAGE);
+		    return;
+		}
+
+		String[] parts = itemDetails.split(" "); // Split the string by spaces
+
+		if( parts.length < 6 )
+		{
+		    JOptionPane.showMessageDialog(null, "Item details format is incorrect", "Error", JOptionPane.ERROR_MESSAGE);
+		    return;
+		}
+
+		String sku = parts[0];
+		String description = itemDetails.substring(itemDetails.indexOf('"'), itemDetails.lastIndexOf('"') + 1);
+		String price = parts[parts.length - 3]; // Price Ea.
+		String quantity = parts[parts.length - 2]; // Qty
+		String total = parts[parts.length - 1]; // Total
+		String discount = parts[parts.length - 4]; // Discount
+
+		cartItemCount++;
+
+		itemDetails = "Item " + cartItemCount + " - SKU: " + sku + ", Desc: " + description + ", Price Ea. " + price + ", Qty: " + quantity + ", Discount: " + discount + ", Total: " + total;
+
 	    
 	    switch( cartItemCount )
 	    {
@@ -174,6 +199,8 @@ public class project1{
 	    
 	    else
 	    {
+	    	itemIdInput.setVisible(true);
+	    	quantityInput.setVisible(true);
 	    	ButtonsOnLaunch();
 	    }
 	    
@@ -336,6 +363,12 @@ public class project1{
 	    addItemButton.setEnabled( false );
 	    checkoutButton.setEnabled( false );
 	    exitButton.setEnabled( true );
+	    
+	    if( itemCounter > 1 )
+	    {
+	    	viewCartButton.setEnabled( true );
+	    	checkoutButton.setEnabled( true );
+	    }
 	}
 //----------------------------------------------------------------------------------------
 	private static void ButtonsAfterSearch()
@@ -346,6 +379,9 @@ public class project1{
 	    addItemButton.setEnabled( true );
 	    checkoutButton.setEnabled( false );
 	    exitButton.setEnabled( true );
+	    
+	    itemIdInput.setVisible(false);
+    	quantityInput.setVisible(false);
 	}
 //----------------------------------------------------------------------------------------
 	private static void ButtonTempVis2()
@@ -356,6 +392,67 @@ public class project1{
 	    addItemButton.setEnabled( false );
 	    checkoutButton.setEnabled( false );
 	    exitButton.setEnabled( true );
+	}
+//----------------------------------------------------------------------------------------
+	private static void resetApp( JFrame frame )
+	{
+		frame.dispose();
+	    
+	    itemCounter = 1;
+	    cartItemCount = 0;
+
+	    initializeComponents();
+
+	    searchButton.setText("Search for item " + itemCounter);
+	    addItemButton.setText("Add Item " + itemCounter + " to Cart");
+	    
+	    topThirdLabels();
+	    
+	    itemIdInput.setText("");
+	    quantityInput.setText("");
+	    itemDetailsOutput.setText("");
+	    subtotalOutput.setText("");
+	    
+	    cartItem1.setText("");
+	    cartItem2.setText("");
+	    cartItem3.setText("");
+	    cartItem4.setText("");
+	    cartItem5.setText("");
+	    
+	    startGUI();
+
+	    frame.revalidate();
+	    frame.repaint();
+	}
+//----------------------------------------------------------------------------------------
+	private static void initializeComponents()
+	{
+	    itemIdInput = new JTextField();
+	    quantityInput = new JTextField();
+	    itemDetailsOutput = new JTextField();
+	    subtotalOutput = new JTextField();
+
+	    itemDetailsOutput.setEditable(false);
+	    subtotalOutput.setEditable(false);
+
+	    cartItem1 = new JTextField();
+	    cartItem2 = new JTextField();
+	    cartItem3 = new JTextField();
+	    cartItem4 = new JTextField();
+	    cartItem5 = new JTextField();
+
+	    cartItem1.setEditable(false);
+	    cartItem2.setEditable(false);
+	    cartItem3.setEditable(false);
+	    cartItem4.setEditable(false);
+	    cartItem5.setEditable(false);
+
+	    searchButton = new JButton("Search for item " + itemCounter);
+	    addItemButton = new JButton("Add Item " + itemCounter + " to Cart");
+	    viewCartButton = new JButton("View Cart");
+	    emptyCart = new JButton("Empty Cart");
+	    checkoutButton = new JButton("Checkout");
+	    exitButton = new JButton("Exit (close app)");
 	}
 //----------------------------------------------------------------------------------------
 }
