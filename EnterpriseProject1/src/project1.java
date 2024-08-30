@@ -7,6 +7,8 @@
 //----------------------------------------------------------------------------------------
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.*;
@@ -18,7 +20,6 @@ public class project1{
 	
 	static int itemCounter = 1;
     static int cartItemCount = 0;
-
 
     static ArrayList < ArrayList < String > > CSVarray = new ArrayList<>();
     static ArrayList < String > TopThirdDetailsOfCartItemsForPopUp = new ArrayList<>();
@@ -45,7 +46,6 @@ public class project1{
     static JTextField cartItem3 = new JTextField();
     static JTextField cartItem4 = new JTextField();
     static JTextField cartItem5 = new JTextField();
-    
 //----------------------------------------------------------------------------------------
 	public static void main(String[] args)
 	{
@@ -146,7 +146,7 @@ public class project1{
 	{
 		ButtonsAfterCheckoutClick();
 		
-	    SimpleDateFormat sdf = new SimpleDateFormat( "dd/MM/yy HH:mm:ss" , Locale.getDefault() );
+	    SimpleDateFormat sdf = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss" , Locale.getDefault() );
 	    
 	    String currentDateTime = sdf.format( new Date() );
 
@@ -196,7 +196,29 @@ public class project1{
 	    
 	    checkoutSummary.append( "ORDER TOTAL: $").append( String.format( "%.2f", subtotal + taxAmount ) ).append( "\n\nThanks for shopping at Nile Dot Com!");
 	    
+	    OutputCSV( checkoutSummary );
+	    
+	    System.out.println( checkoutSummary.toString() );
+	    
 	    JOptionPane.showMessageDialog(null, checkoutSummary.toString(), "Checkout Summary", JOptionPane.INFORMATION_MESSAGE);
+	}
+//----------------------------------------------------------------------------------------
+	private static void OutputCSV( StringBuilder disp )
+	{
+		String Decon = disp.toString();
+				
+		//String dataToAppend = String.format("%s,%s,%s\n", formattedSubtotal, formattedTax, formattedTotal);
+
+       /* try( FileWriter fileWriter = new FileWriter( "transactions.csv", true ) )
+        {
+            //fileWriter.append(dataToAppend);
+            System.out.println("Data appended successfully!");
+        }
+        
+        catch( IOException e )
+        {
+            System.err.println("Error appending data to file: " + e.getMessage());
+        }*/
 	}
 //----------------------------------------------------------------------------------------	
 	private static double calculateOrderSubtotal()
