@@ -33,6 +33,8 @@ public class project1{
     static JTextField itemDetailsOutput = null;
     static JTextField subtotalOutput = null;
     
+    static JLabel cartTitle = null;
+    
     static JLabel line1 = null;
     static JLabel line2 = null;
     static JLabel line3 = null;
@@ -100,7 +102,7 @@ public class project1{
 	    startPage.add(subtotalOutput).setBounds(220, 10 + 3 * topThirdVerticalSpacing, 300, 30);
 
 	    // Middle third section
-	    JLabel cartTitle = new JLabel("Shopping Cart");
+	    cartTitle = new JLabel("Shopping Cart: Currently Empty");
 	    
 	    cartItem1.setEditable(false);
 	    cartItem2.setEditable(false);
@@ -110,7 +112,7 @@ public class project1{
 
 	 // Middle third spacing
 	    int middleThirdVerticalSpacing = topThirdHeight / 7;
-	    startPage.add(cartTitle).setBounds(10, middleThirdStart + 10, 200, 30);
+	    startPage.add(cartTitle).setBounds(10, middleThirdStart + 10, CartItemWidth, 30);
 	    startPage.add(cartItem1).setBounds(10, middleThirdStart + 10 + middleThirdVerticalSpacing, CartItemWidth, 30);
 	    startPage.add(cartItem2).setBounds(10, middleThirdStart + 10 + 2 * middleThirdVerticalSpacing, CartItemWidth, 30);
 	    startPage.add(cartItem3).setBounds(10, middleThirdStart + 10 + 3 * middleThirdVerticalSpacing, CartItemWidth, 30);
@@ -417,6 +419,7 @@ public class project1{
 	    if( itemCounter > 5 )
 	    {
 	    	cartFullButtons();
+	    	cartTitle.setText( "Shopping Cart: Currently Empty" );
 	    }
 	    
 	    else
@@ -430,6 +433,16 @@ public class project1{
 	    line2.setText("Enter quantity for item " + itemCounter + ":");
 	    line3.setText("Details for item " + itemCounter + ":");
 	    line4.setText("Current sub-total for " + (itemCounter - 1) + " items:");
+	    
+	    if( ( itemCounter - 1 ) == 1 )
+	    {
+	    	cartTitle.setText( "Shopping Cart: Currently Contains " + ( itemCounter - 1 ) + " item" );
+	    }
+	    
+	    else
+	    {
+	    	cartTitle.setText( "Shopping Cart: Currently Contains " + ( itemCounter - 1 ) + " items" );
+	    }
 	    
 	    subtotalOutput.setText( "$" + String.format( "%.2f", calculateOrderSubtotal() ) );
 	    
