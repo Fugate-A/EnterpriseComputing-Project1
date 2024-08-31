@@ -70,8 +70,9 @@ public class project1{
 	    int middleThirdStart = topThirdHeight;
 	    int bottomThirdStart = 2 * frameHeight / 3;
 
+	    int topThirdWidth = 500;
 	    int CartItemWidth = 800;
-	    
+
 	    startPage.setLayout(null); // Disable layout
 	    startPage.setSize(frameWidth, frameHeight); // Frame size (width x, height y)
 	    startPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -83,23 +84,23 @@ public class project1{
 	    quantityInput = new JTextField();
 	    itemDetailsOutput = new JTextField();
 	    subtotalOutput = new JTextField();
-	    
+
 	    itemDetailsOutput.setEditable(false);
 	    subtotalOutput.setEditable(false);
 
 	    // Top third spacing
 	    int topThirdVerticalSpacing = topThirdHeight / 4;
 	    startPage.add(line1).setBounds(10, 10, 200, 30);
-	    startPage.add(itemIdInput).setBounds(220, 10, 300, 30);
+	    startPage.add(itemIdInput).setBounds(220, 10, topThirdWidth, 30); 
 
 	    startPage.add(line2).setBounds(10, 10 + topThirdVerticalSpacing, 200, 30);
-	    startPage.add(quantityInput).setBounds(220, 10 + topThirdVerticalSpacing, 300, 30);
+	    startPage.add(quantityInput).setBounds(220, 10 + topThirdVerticalSpacing, topThirdWidth, 30); 
 
 	    startPage.add(line3).setBounds(10, 10 + 2 * topThirdVerticalSpacing, 200, 30);
-	    startPage.add(itemDetailsOutput).setBounds(220, 10 + 2 * topThirdVerticalSpacing, 300, 30);
+	    startPage.add(itemDetailsOutput).setBounds(220, 10 + 2 * topThirdVerticalSpacing, topThirdWidth, 30); 
 
 	    startPage.add(line4).setBounds(10, 10 + 3 * topThirdVerticalSpacing, 200, 30);
-	    startPage.add(subtotalOutput).setBounds(220, 10 + 3 * topThirdVerticalSpacing, 300, 30);
+	    startPage.add(subtotalOutput).setBounds(220, 10 + 3 * topThirdVerticalSpacing, topThirdWidth, 30);
 
 	    // Middle third section
 	    cartTitle = new JLabel("Shopping Cart: Currently Empty");
@@ -407,7 +408,7 @@ public class project1{
 	    // Clear inputs and details
 	    itemIdInput.setText("");
 	    quantityInput.setText("");
-	    itemDetailsOutput.setText("");
+	    //itemDetailsOutput.setText("");
 	    subtotalOutput.setText("");
 
 	    // Update item counter
@@ -431,8 +432,17 @@ public class project1{
 	    
 	    line1.setText("Enter item ID for item " + itemCounter + ":");
 	    line2.setText("Enter quantity for item " + itemCounter + ":");
-	    line3.setText("Details for item " + itemCounter + ":");
 	    line4.setText("Current sub-total for " + (itemCounter - 1) + " items:");
+	    
+	    if( itemCounter == 1 )
+	    {
+	    	line3.setText("Details for item " + itemCounter + ":");
+	    }
+	    
+	    else
+	    {
+	    	line3.setText("Details for item " + ( itemCounter - 1 ) + ":");
+	    }
 	    
 	    if( ( itemCounter - 1 ) == 1 )
 	    {
@@ -489,18 +499,23 @@ public class project1{
 				{
 					ButtonsAfterSearch();
 	                updateDetailsLine( s, quantityInput.getText() );
+	                line3.setText("Details for item " + itemCounter + ":");
 				}
 				
 				else
 				{
-					JOptionPane.showMessageDialog(null, "Item Out of Stock", "Not Available", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Sorry... that item is out of stock, please try another item", "Nile Dot Com - ERROR", JOptionPane.ERROR_MESSAGE);
+					itemIdInput.setText("");
+					quantityInput.setText("");
 				}
 				
 				return;
 			}
 		}
 		
-		JOptionPane.showMessageDialog(null, "Item ID Not Found", "Not Available", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Item ID Not Found in File", "Nile Dot Com - ERROR", JOptionPane.ERROR_MESSAGE);
+		itemIdInput.setText("");
+		quantityInput.setText("");
 	}
 //----------------------------------------------------------------------------------------
 	private static void updateDetailsLine( ArrayList < String > s, String quant )
