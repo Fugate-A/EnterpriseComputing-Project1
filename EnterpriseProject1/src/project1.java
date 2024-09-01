@@ -252,7 +252,7 @@ public class project1{
 			
 			//System.out.println( TransID + ", " + tempBTQ + tempITQ.trim() + ", " + tempATQ + " " + String.format( "%.2f" , Double.parseDouble( splitATQ ) / 100 ) + ", " + ATD );
 			
-			String StoreInCSV = TransID + ", " + tempBTQ + tempITQ + tempATQ + " " + String.format( "%.2f" , Double.parseDouble( splitATQ ) / 100 ) + " " + ATD + DateFormatter( TransID ) ;
+			String StoreInCSV = TransID + ", " + tempBTQ + tempITQ.trim() + ", " + tempATQ + " " + String.format( "%.2f" , Double.parseDouble( splitATQ ) / 100 ) + ", " + ATD + DateFormatter( TransID ) ;
 			
 			fileWrite( StoreInCSV );
 			
