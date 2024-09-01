@@ -494,7 +494,8 @@ public class project1{
 				
 				else if( Integer.parseInt( s.get(3) ) < Integer.parseInt( quantityInput.getText().trim() ) && s.get(2).toLowerCase().equals( "true" ) )//has enough quantity
 				{
-					JOptionPane.showMessageDialog(null, "Quantity Not Available", "Not Available", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Insufficent Stock - " + Integer.parseInt( s.get(3) ) + " available" , "Not Available", JOptionPane.ERROR_MESSAGE);
+					quantityInput.setText( "" );
 				}
 				
 				else if( s.get(2).toLowerCase().equals( "true" ) )//in stock
