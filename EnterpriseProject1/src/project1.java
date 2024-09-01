@@ -341,22 +341,22 @@ public class project1{
 	    
 	    if( !cartItem2.getText().isEmpty() )
 	    {
-	    	cartDetails.append("1. ").append( TopThirdDetailsOfCartItemsForPopUp.get(1) ).append("\n");
+	    	cartDetails.append("2. ").append( TopThirdDetailsOfCartItemsForPopUp.get(1) ).append("\n");
 	    }
 	    
 	    if( !cartItem3.getText().isEmpty() )
 	    {
-	    	cartDetails.append("1. ").append( TopThirdDetailsOfCartItemsForPopUp.get(2) ).append("\n");
+	    	cartDetails.append("3. ").append( TopThirdDetailsOfCartItemsForPopUp.get(2) ).append("\n");
 	    }
 	    
 	    if( !cartItem4.getText().isEmpty() )
 	    {
-	    	cartDetails.append("1. ").append( TopThirdDetailsOfCartItemsForPopUp.get(3) ).append("\n");
+	    	cartDetails.append("4. ").append( TopThirdDetailsOfCartItemsForPopUp.get(3) ).append("\n");
 	    }
 	    
 	    if( !cartItem5.getText().isEmpty() )
 	    {
-	    	cartDetails.append("1. ").append( TopThirdDetailsOfCartItemsForPopUp.get(4) ).append("\n");
+	    	cartDetails.append("5. ").append( TopThirdDetailsOfCartItemsForPopUp.get(4) ).append("\n");
 	    }
 
 	    JOptionPane.showMessageDialog(null, cartDetails.toString(), "Nile Dot Com - Current Shopping Cart Status", JOptionPane.INFORMATION_MESSAGE);
