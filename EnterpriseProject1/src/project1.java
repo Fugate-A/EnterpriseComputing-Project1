@@ -156,11 +156,12 @@ public class project1{
 	    SimpleDateFormat sdf = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss" , Locale.getDefault() );
 	    
 	    String currentDateTime = sdf.format( new Date() );
+	    String timeForCheckPrint = currentDateTime;
 
 	    StringBuilder checkoutSummary = new StringBuilder();
-
-	    checkoutSummary.append( "Date and Time: " ).append( currentDateTime ).append("\n\n");
-
+	    
+	    checkoutSummary.append( "Date and Time: " ).append( DateFormatter( timeForCheckPrint.replace( "/", "" ).replace( " ", "" ).replace( ":", "" ).trim() ).substring( 2 ) ).append("\n\n");
+	    
 	    checkoutSummary.append( "Number of line items: " ).append( cartItemCount ).append("\n\n");
 
 	    checkoutSummary.append( "Item# / ID / Title / Price / Qty / Disc % / Subtotal:\n\n" );
@@ -203,20 +204,20 @@ public class project1{
 	    
 	    checkoutSummary.append( "ORDER TOTAL: $").append( String.format( "%.2f", subtotal + taxAmount ) ).append( "\n\nThanks for shopping at Nile Dot Com!");
 	    
+	    JOptionPane.showMessageDialog(null, checkoutSummary.toString(), "Nile Dot Com - FINAL INVOICE", JOptionPane.INFORMATION_MESSAGE);
+	    
+	    checkoutSummary.replace( 0 , checkoutSummary.indexOf( "\n" ) , "Date and Time: " + currentDateTime );
+	    
 	    OutputCSV( checkoutSummary );
-	    
-	    //System.out.println( checkoutSummary.toString() );
-	    
-	    JOptionPane.showMessageDialog(null, checkoutSummary.toString(), "Checkout Summary", JOptionPane.INFORMATION_MESSAGE);
 	}
 //----------------------------------------------------------------------------------------
 	private static void OutputCSV( StringBuilder disp )
 	{
 		String Decon = disp.toString();
-		
+			
 		String TransID = Decon.substring( 15, 34 );
 		TransID = TransID.replace( "/", "" ).replace( ":", "" ).replace( " ", "" );
-		
+				
 		int i = 0;
 		
 		for( String p : TopThirdDetailsOfCartItemsForPopUp )
@@ -310,9 +311,7 @@ public class project1{
 	}
 //----------------------------------------------------------------------------------------	
 	private static double calculateOrderSubtotal()
-	{
-		System.out.println( TopThirdDetailsOfCartItemsForPopUp.toString() );
-		
+	{		
 	    double subtotal = 00.00;
 
 	    if( !TopThirdDetailsOfCartItemsForPopUp.isEmpty() )
