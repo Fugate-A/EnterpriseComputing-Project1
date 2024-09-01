@@ -42,7 +42,7 @@ public class project1{
     
     static JButton searchButton = new JButton( "Search for item " + itemCounter );
     static JButton viewCartButton = new JButton( "View Cart" );
-    static JButton emptyCart = new JButton( "Empty Cart" );
+    static JButton emptyCart = new JButton( "Empty Cart - New Order" );
     static JButton addItemButton = new JButton( "Add Item " + itemCounter + " to Cart" );
     static JButton checkoutButton = new JButton( "Checkout" );
     static JButton exitButton = new JButton( "Exit (close app)" );
@@ -311,16 +311,18 @@ public class project1{
 //----------------------------------------------------------------------------------------	
 	private static double calculateOrderSubtotal()
 	{
-	    double subtotal = 0.0;
+		System.out.println( TopThirdDetailsOfCartItemsForPopUp.toString() );
+		
+	    double subtotal = 00.00;
 
 	    if( !TopThirdDetailsOfCartItemsForPopUp.isEmpty() )
 	    {
 	    	int index = 0;
 	    	
 	    	for( String s : TopThirdDetailsOfCartItemsForPopUp )
-	    	{
-	    		subtotal = subtotal + Double.parseDouble( TopThirdDetailsOfCartItemsForPopUp.get( index ).substring( TopThirdDetailsOfCartItemsForPopUp.get(index).length() - 4 ) );
-	    		
+	    	{	    		
+	    		subtotal += Double.parseDouble(TopThirdDetailsOfCartItemsForPopUp.get(index).substring(TopThirdDetailsOfCartItemsForPopUp.get(index).lastIndexOf("$") + 1).trim());
+	    			    		
 	    		index++;
 	    	}
 	    }
