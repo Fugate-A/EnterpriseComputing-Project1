@@ -63,6 +63,7 @@ public class project1{
 	private static void startGUI()
 	{
 	    JFrame startPage = new JFrame();
+	    startPage.setTitle( "Nile Dot Com - Fall 2024" );
 
 	    int frameHeight = 600;
 	    int frameWidth = 850;
@@ -358,7 +359,7 @@ public class project1{
 	    	cartDetails.append("1. ").append( TopThirdDetailsOfCartItemsForPopUp.get(4) ).append("\n");
 	    }
 
-	    JOptionPane.showMessageDialog(null, cartDetails.toString(), "Shopping Cart", JOptionPane.INFORMATION_MESSAGE);
+	    JOptionPane.showMessageDialog(null, cartDetails.toString(), "Nile Dot Com - Current Shopping Cart Status", JOptionPane.INFORMATION_MESSAGE);
 	}
 //----------------------------------------------------------------------------------------	
 	private static void addToCartButtonPush()
